@@ -8,5 +8,5 @@ Here are some documentation links of how to use the Forecast-API:
 * [swagger-ui](https://forecast-docs.metoceanapi.com/swagger-ui/)
 * [swagger.yml](https://forecast-docs.metoceanapi.com/swagger.yml)
 
-We also have example code for:
+Example code for:
 * [python](python/)
