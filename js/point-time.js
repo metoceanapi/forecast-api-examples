@@ -1,4 +1,4 @@
-let url = 'https://forecast-v2.metoceanapi.com/point/time';
+let url = 'https://forecast-v2.metoceanapi.com/point/time'
 
 let data = {
   points: [{lon: 174.7842, lat: -37.7935}],
@@ -8,22 +8,6 @@ let data = {
     interval: '3h',
     repeat: 3,
   }
-};
+}
 
-let options = {
-  method: 'post',
-  body: JSON.stringify(data),
-  headers: {
-    'Content-Type': 'application/json',
-    'x-api-key': ''
-  }
-};
-
-await fetch(url, options)
-    .then(response => {
-      console.log('API response status:', response.status);
-      return response.json();
-    }).then(json => {
-      console.log('API response JSON:', json);
-      document.getElementById('response').innerHTML = JSON.stringify(json);
-    });
+export let pointTime = { url, data }

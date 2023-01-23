@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "name": "examples",
+  "pkg": {
+    "scripts": "*.js"
+  },
+  "engines": {
+    "node": ">=19"
+  }
+}

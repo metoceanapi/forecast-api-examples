@@ -3,8 +3,25 @@
   <head>
     <meta charset='utf-8' />
     <title>Forecast API JavaScript Examples</title>
-    <script src='index.js' type='module'></script>
   </head>
   <body>
+    <label for='apikey'>API Key</label>
+    <input id='apikey' type='text' name='apikey'></input>
+    <br>
+    <button id='run'>Run</button>
+    <pre id='response'></pre>
   </body>
+  <script type='module'>
+    import { makeOptions, fetcher } from './index.js'
+    import { pointTime } from './point-time.js'
+
+    function execute() {
+      let key = document.getElementById('apikey').value;
+      let options = makeOptions(pointTime.data, key)
+      fetcher(pointTime.url, options, function(json) {
+        document.getElementById('response').innerHTML = JSON.stringify(json);
+      })
+    }
+    document.querySelector('#run').addEventListener('click', execute)
+  </script>
 </html>
