@@ -2,11 +2,13 @@
 
 Welcome to MetOcean Forecast-API examples.
 
-Here are some documentation links of how to use the Forecast-API:
-* [forecast-docs.metoceanapi.com](https://forecast-docs.metoceanapi.com)
-* [forecast-demo.metoceanapi.com](https://forecast-demo.metoceanapi.com)
-* [swagger-ui](https://forecast-docs.metoceanapi.com/swagger-ui/)
-* [swagger.yml](https://forecast-docs.metoceanapi.com/swagger.yml)
+Here are some resources demonstrating how to use our Forecast API:
+* [Forecast API Docs](https://forecast-docs.metoceanapi.com)
+* [Forecast API Demo](https://forecast-demo.metoceanapi.com)
+* [Swagger (UI)](https://forecast-docs.metoceanapi.com/swagger-ui/)
+* [Swagger (yml)](https://forecast-docs.metoceanapi.com/swagger.yml)
 
 Example code for:
-* [python](python/)
+* [Python](python/)
+* [Javascript](js/)
+* [Go](golang/)
