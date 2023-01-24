@@ -15,9 +15,6 @@ export async function fetcher(url, options, cb) {
       console.log('API response status:', response.status)
       return response.json()
     }).then(json => {
-      console.log('API response JSON:', json)
-      if (cb !== undefined) {
-        cb(json)
-      }
+      cb(json)
     });
 }

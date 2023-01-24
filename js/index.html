@@ -19,6 +19,7 @@
       let key = document.getElementById('apikey').value;
       let options = makeOptions(pointTime.data, key)
       fetcher(pointTime.url, options, function(json) {
+        console.log('API response JSON:', json)
         document.getElementById('response').innerHTML = JSON.stringify(json, null, 2);
       })
     }
