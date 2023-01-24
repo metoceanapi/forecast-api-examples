@@ -10,17 +10,29 @@
     <br>
     <button id='run'>Run</button>
     <pre id='response'></pre>
+    <pre id='processed'></pre>
   </body>
   <script type='module'>
     import { makeOptions, fetcher } from './index.js'
     import { pointTime } from './point-time.js'
 
     function execute() {
-      let key = document.getElementById('apikey').value;
-      let options = makeOptions(pointTime.data, key)
-      fetcher(pointTime.url, options, function(json) {
-        console.log('API response JSON:', json)
-        document.getElementById('response').innerHTML = JSON.stringify(json, null, 2);
+      let key = document.getElementById('apikey').value
+      let target = pointTime
+      let options = makeOptions(target.data, key)
+      fetcher(target.url, options, function(data) {
+        console.log('API response JSON:', data)
+        document.getElementById('response').innerHTML = JSON.stringify(data, null, 2);
+
+        if (target.cb === undefined) {
+          return
+        }
+        let processed = target.cb(data)
+        if (processed === undefined) {
+          return
+        }
+        console.log('Processed:', processed)
+        document.getElementById('processed').innerHTML = JSON.stringify(processed, null, 2);
       })
     }
     document.querySelector('#run').addEventListener('click', execute)
