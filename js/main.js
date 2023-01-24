@@ -4,9 +4,16 @@ import { pointTime } from './point-time.js'
 
 function main() {
   let key = argv.pop()
-  let options = makeOptions(pointTime.data, key)
+  let target = pointTime
+  let options = makeOptions(target.data, key)
 
-  fetcher(pointTime.url, options)
+  fetcher(target.url, options, target.cb)
 }
 
-main();
+main()
+
+// TODO show:
+// vectors
+// mask reasons
+// base64 unpacking
+// units

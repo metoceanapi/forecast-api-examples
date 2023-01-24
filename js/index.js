@@ -12,10 +12,10 @@ export function makeOptions(data, key) {
 export async function fetcher(url, options, cb) {
   await fetch(url, options)
     .then(response => {
-      console.log('API response status:', response.status);
-      return response.json();
+      console.log('API response status:', response.status)
+      return response.json()
     }).then(json => {
-      console.log('API response JSON:', json);
+      console.log('API response JSON:', json)
       if (cb !== undefined) {
         cb(json)
       }
