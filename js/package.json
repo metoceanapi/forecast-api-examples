@@ -5,6 +5,6 @@
     "scripts": "*.js"
   },
   "engines": {
-    "node": ">=19"
+    "node": ">=19.0.0"
   }
 }
