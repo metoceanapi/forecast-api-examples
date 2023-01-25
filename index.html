@@ -5,13 +5,17 @@
     <title>Forecast API JavaScript Examples</title>
   </head>
   <body>
-    <label for='apikey'>API Key:</label>
-    <input id='apikey' type='text' name='apikey'></input>
-    <br>
-    <label for='example'>Example:</label>
-    <select name='example' id='examples'></select>
-    <br>
-    <button id='run'>Run</button>
+    <!-- hack to make the apikey input autofill nicely -->
+    <iframe id='remember' name='remember' style="display:none" src='about:blank'></iframe>
+    <form target='remember' method='post' action='about:blank'>
+      <label for='apikey'>API Key:</label>
+      <input id='apikey' type='text' name='apikey' autocomplete='on'></input>
+      <br>
+      <label for='example'>Example:</label>
+      <select name='example' id='examples'></select>
+      <br>
+      <button id='run' type='submit'>Run</button>
+    </form>
     <br>
     <pre id='response'></pre>
     <pre id='processed'></pre>
