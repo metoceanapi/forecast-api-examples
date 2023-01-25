@@ -35,15 +35,16 @@
       }
       let example = examples[exampleName]
       let options = makeOptions(example.data, key)
-      fetcher(example.url, options, function(data) {
+      fetcher(example.url, options, function(status, data) {
         console.log('API response JSON:', data)
         document.getElementById('response').innerHTML = JSON.stringify(data, null, 2);
-
-        if (!example.cb) {
+        if (status != 200 || !example.cb) {
+          document.getElementById('processed').innerHTML = null
           return
         }
         let processed = example.cb(data)
         if (processed === undefined) {
+          document.getElementById('processed').innerHTML = null
           return
         }
         console.log('Processed:', processed)

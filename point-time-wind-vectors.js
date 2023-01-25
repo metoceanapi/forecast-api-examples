@@ -14,7 +14,6 @@ export let pointTimeWindVectors = {
   url,
   data,
   cb: function(data) {
-    // TODO detect bad response
     let windSpeedNorth = data['variables']['wind.speed.northward.at-10m']
     let windSpeedEast = data['variables']['wind.speed.eastward.at-10m']
 

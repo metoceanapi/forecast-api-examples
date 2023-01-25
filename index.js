@@ -13,8 +13,8 @@ export async function fetcher(url, options, cb) {
   await fetch(url, options)
     .then(response => {
       console.log('API response status:', response.status)
-      return response.json()
-    }).then(json => {
-      cb(json)
+      return Promise.all([Promise.resolve(response.status), response.json()])
+    }).then(([status, json]) => {
+      cb(status, json)
     });
 }
