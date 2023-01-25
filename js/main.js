@@ -3,6 +3,7 @@ import { inspect } from 'node:util'
 import { makeOptions, fetcher } from './index.js'
 import { pointTime } from './point-time.js'
 import { pointTimeWindVectors } from './point-time-wind-vectors.js'
+import { pointTimeMasks } from './point-time-masks.js'
 
 function pretty(o) {
   return inspect(o, {showHidden: false, depth: null, colors: true})
@@ -29,7 +30,5 @@ function main() {
 main()
 
 // TODO show:
-// vectors
-// mask reasons
 // base64 unpacking
-// units
+// units?
