@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <title>Forecast API JavaScript Examples</title>
+  </head>
+  <body>
+    <label for='apikey'>API Key</label>
+    <input id='apikey' type='text' name='apikey'></input>
+    <br>
+    <button id='run'>Run</button>
+    <pre id='response'></pre>
+    <pre id='processed'></pre>
+  </body>
+  <script type='module'>
+    import { makeOptions, fetcher } from './index.js'
+    import { pointTime } from './point-time.js'
+
+    function execute() {
+      let key = document.getElementById('apikey').value
+      let target = pointTime
+      let options = makeOptions(target.data, key)
+      fetcher(target.url, options, function(data) {
+        console.log('API response JSON:', data)
+        document.getElementById('response').innerHTML = JSON.stringify(data, null, 2);
+
+        if (target.cb === undefined) {
+          return
+        }
+        let processed = target.cb(data)
+        if (processed === undefined) {
+          return
+        }
+        console.log('Processed:', processed)
+        document.getElementById('processed').innerHTML = JSON.stringify(processed, null, 2);
+      })
+    }
+    document.querySelector('#run').addEventListener('click', execute)
+  </script>
+</html>
