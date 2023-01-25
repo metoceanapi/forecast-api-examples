@@ -5,10 +5,19 @@
     <title>Forecast API JavaScript Examples</title>
   </head>
   <body>
-    <label for='apikey'>API Key</label>
+    <label for='apikey'>API Key:</label>
     <input id='apikey' type='text' name='apikey'></input>
     <br>
+    <label for='example'>Example:</label>
+    <select name='example'>
+      <option value='pointTime'>Point Time</option>
+      <option value='pointTimeWindVectors'>Point Time Wind Vectors</option>
+      <option value='pointTimeMasks'>Point Time Masks</option>
+      <option value='pointTimeBase64'>Point Time Base64</option>
+    </select>
+    <br>
     <button id='run'>Run</button>
+    <br>
     <pre id='response'></pre>
     <pre id='processed'></pre>
   </body>
