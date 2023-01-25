@@ -9,7 +9,8 @@
     <input id='apikey' type='text' name='apikey'></input>
     <br>
     <label for='example'>Example:</label>
-    <select name='example'>
+    <!-- TODO generate examples -->
+    <select name='example' id="examples">
       <option value='pointTime'>Point Time</option>
       <option value='pointTimeWindVectors'>Point Time Wind Vectors</option>
       <option value='pointTimeMasks'>Point Time Masks</option>
@@ -23,20 +24,21 @@
   </body>
   <script type='module'>
     import { makeOptions, fetcher } from './index.js'
-    import { pointTime } from './point-time.js'
+    import { examples } from './examples.js'
 
     function execute() {
       let key = document.getElementById('apikey').value
-      let target = pointTime
-      let options = makeOptions(target.data, key)
-      fetcher(target.url, options, function(data) {
+      let exampleName = document.getElementById('examples').value
+      let example = examples[exampleName]
+      let options = makeOptions(example.data, key)
+      fetcher(example.url, options, function(data) {
         console.log('API response JSON:', data)
         document.getElementById('response').innerHTML = JSON.stringify(data, null, 2);
 
-        if (target.cb === undefined) {
+        if (example.cb === undefined) {
           return
         }
-        let processed = target.cb(data)
+        let processed = example.cb(data)
         if (processed === undefined) {
           return
         }
