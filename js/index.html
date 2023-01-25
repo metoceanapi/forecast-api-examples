@@ -9,13 +9,7 @@
     <input id='apikey' type='text' name='apikey'></input>
     <br>
     <label for='example'>Example:</label>
-    <!-- TODO generate examples -->
-    <select name='example' id="examples">
-      <option value='pointTime'>Point Time</option>
-      <option value='pointTimeWindVectors'>Point Time Wind Vectors</option>
-      <option value='pointTimeMasks'>Point Time Masks</option>
-      <option value='pointTimeBase64'>Point Time Base64</option>
-    </select>
+    <select name='example' id='examples'></select>
     <br>
     <button id='run'>Run</button>
     <br>
@@ -26,9 +20,15 @@
     import { makeOptions, fetcher } from './index.js'
     import { examples } from './examples.js'
 
+    let examplesSelector = document.getElementById('examples')
+    let apikey = document.getElementById('apikey')
+
     function execute() {
-      let key = document.getElementById('apikey').value
-      let exampleName = document.getElementById('examples').value
+      let key = apikey.value
+      let exampleName = examplesSelector.value
+      if (!exampleName) {
+        return
+      }
       let example = examples[exampleName]
       let options = makeOptions(example.data, key)
       fetcher(example.url, options, function(data) {
@@ -46,6 +46,13 @@
         document.getElementById('processed').innerHTML = JSON.stringify(processed, null, 2);
       })
     }
+
+    Object.keys(examples).forEach(name => {
+      let option = document.createElement('option')
+      option.value = name
+      option.innerHTML = name
+      examplesSelector.append(option)
+    })
     document.querySelector('#run').addEventListener('click', execute)
   </script>
 </html>
