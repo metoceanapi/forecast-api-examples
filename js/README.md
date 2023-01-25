@@ -5,8 +5,9 @@
 This requires Node v19 or newer to be installed
 
 ```
-node main.js <your-apikey-here>
+node main.js <example> <your-apikey-here>
 ```
+Some currently available examples are `pointTime`, `pointTimeWindVectors`, `pointTimeMasks`, and `pointTimeBase64`.
 
 ## Browser
 

@@ -11,17 +11,32 @@ function pretty(o) {
 }
 
 function main() {
+  let examples = {
+    pointTime,
+    pointTimeWindVectors,
+    pointTimeMasks,
+    pointTimeBase64
+  }
   let key = argv.pop()
-  let target = pointTime
-  let options = makeOptions(target.data, key)
+  let exampleName = argv.pop()
+  if (!key || !exampleName) {
+    console.log('Arguments <example> <key> are required')
+    return
+  }
+  let example = examples[exampleName]
+  if (!example) {
+    console.log('<example> must be one of:', Object.keys(examples).reduce((acc, elem) => acc + ', ' + elem))
+    return
+  }
 
-  fetcher(target.url, options, function(data) {
+  let options = makeOptions(example.data, key)
+  fetcher(example.url, options, function(data) {
     console.log('API response JSON:', pretty(data))
-    if(target.cb === undefined) {
+    if (!example.cb) {
       return
     }
-    let processed = target.cb(data)
-    if (processed === undefined) {
+    let processed = example.cb(data)
+    if (!processed) {
       return
     }
     console.log('Processed:', pretty(processed))
@@ -30,6 +45,8 @@ function main() {
 
 main()
 
+// TODO comments
+// TODO selector for browser
+// TODO github pages?
 // TODO show:
-// base64 unpacking
 // units?
