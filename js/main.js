@@ -21,9 +21,9 @@ function main() {
   }
 
   let options = makeOptions(example.data, key)
-  fetcher(example.url, options, function(data) {
+  fetcher(example.url, options, function(status, data) {
     console.log('API response JSON:', pretty(data))
-    if (!example.cb) {
+    if (status != 200 || !example.cb) {
       return
     }
     let processed = example.cb(data)
