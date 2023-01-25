@@ -27,7 +27,7 @@ function main() {
       return
     }
     let processed = example.cb(data)
-    if (!processed) {
+    if (processed === undefined) {
       return
     }
     console.log('Processed:', pretty(processed))

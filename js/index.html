@@ -35,7 +35,7 @@
         console.log('API response JSON:', data)
         document.getElementById('response').innerHTML = JSON.stringify(data, null, 2);
 
-        if (example.cb === undefined) {
+        if (!example.cb) {
           return
         }
         let processed = example.cb(data)
