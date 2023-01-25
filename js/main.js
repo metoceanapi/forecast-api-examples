@@ -47,6 +47,5 @@ main()
 
 // TODO comments
 // TODO selector for browser
-// TODO github pages?
 // TODO show:
 // units?

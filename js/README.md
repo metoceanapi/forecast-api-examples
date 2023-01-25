@@ -11,7 +11,7 @@ Some currently available examples are `pointTime`, `pointTimeWindVectors`, `poin
 
 ## Browser
 
-Serve the files, like this (or with a simple server of your choice):
+Available on [github pages](https://metoceanapi.github.io/forecast-api-examples/), or serve the files locally yourself, like this (or with any other simple server of your choice):
 
 ```
 npx http-server
