@@ -14,16 +14,19 @@ let data = {
   outputFormat: 'base64',
 }
 
+const bytesPerUint32 = 4
+
 function unpack(variable, reasonsByCode) {
   let b64data = variable['data']
   let bytes = Uint8Array.from(atob(b64data), c => c.charCodeAt(0))
-  // TODO endianness -- typed arrays have platform endianness
-  let integers = new Uint32Array(bytes.buffer) // TODO check signedness
-  let floats = new Float32Array(bytes.buffer)
-
-  return Array.from(integers).map((n, index) => {
-    let reason = reasonsByCode.get(n)
-    return reason ? reason : floats[index]
+  let view = new DataView(bytes.buffer)
+  // If you know you are running on a little endian platform,
+  // you can simply use Uint32Array and Float32Array on bytes.buffer
+  return Array.from({length: bytes.length / bytesPerUint32}).map((_, index) => {
+    let offset = index * bytesPerUint32
+    let integer = view.getUint32(offset, true) // true indicates little endian
+    let reason = reasonsByCode.get(integer)
+    return reason ? reason : view.getFloat32(offset, true)
   })
 }
 
