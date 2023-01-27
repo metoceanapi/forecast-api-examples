@@ -36,7 +36,5 @@ function main() {
 
 main()
 
-// TODO comments
 // TODO show:
 // units?
-// TODO HTML styling?

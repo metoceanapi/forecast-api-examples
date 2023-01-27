@@ -10,6 +10,13 @@ let data = {
   }
 }
 
+/*
+This demonstrates how to convert a north/east pair of wind components (sometimes referred to as u,v components)
+into magnitude and direction.
+
+Ocean current component pairs can be converted in the same way, but note that by convention,
+winds come from a given direction and currents go towards that direction.
+*/
 export let pointTimeWindVectors = {
   url,
   data,
@@ -17,8 +24,7 @@ export let pointTimeWindVectors = {
     let windSpeedNorth = data['variables']['wind.speed.northward.at-10m']
     let windSpeedEast = data['variables']['wind.speed.eastward.at-10m']
 
-
-    let windSpeedScalar = [...windSpeedNorth['data']].map((north,index) => {
+    let windSpeedScalar = [...windSpeedNorth['data']].map((north, index) => {
       if (windSpeedNorth['noData'][index] || windSpeedEast['noData'][index]) {
         return null
       }
@@ -26,7 +32,8 @@ export let pointTimeWindVectors = {
       return Math.sqrt(Math.pow(north, 2) + Math.pow(east, 2))
     })
 
-    let windDirectionDegrees = [...windSpeedNorth['data']].map((north,index) => {
+    let windDirectionDegrees = [...windSpeedNorth['data']].map((north, index) => {
+      // here, you could also check the data.noDataReasons table to look up the corresponding reason if you wanted to
       if (windSpeedNorth['noData'][index] || windSpeedEast['noData'][index]) {
         return null
       }
