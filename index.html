@@ -3,23 +3,29 @@
   <head>
     <meta charset='utf-8' />
     <title>Forecast API JavaScript Examples</title>
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+        <link rel="stylesheet" type="text/css" href="index.css">
   </head>
   <body>
     <!-- hack to make the apikey input autofill nicely -->
     <iframe id='remember' name='remember' style="display:none" src='about:blank'></iframe>
-    <form target='remember' method='post' action='about:blank'>
-      <label for='apikey'>API Key:</label>
-      <input id='apikey' type='text' name='apikey' autocomplete='on'></input>
-      <br>
-      <label for='example'>Example:</label>
-      <select name='example' id='examples'></select>
-      <br>
-      <button id='run' type='submit'>Run</button>
-    </form>
-    <br>
-    <pre id='response'></pre>
-    <pre id='processed'></pre>
+    <section id='input'>
+      <form target='remember' method='post' action='about:blank'>
+        <label for='apikey'>API Key</label>
+        <input id='apikey' type='text' name='apikey' autocomplete='on'></input>
+        <label for='example'>Example</label>
+        <select name='example' id='examples'></select>
+        <span>
+          <button id='run' type='submit'>Run</button>
+        </span>
+      </form>
+    </section>
+    <section id='output'>
+      <div>
+        <pre id='processed'></pre>
+        <pre id='response'></pre>
+      </div>
+    </section>
   </body>
   <script type='module'>
     import { makeOptions, fetcher } from './index.js'
@@ -38,7 +44,7 @@
       let options = makeOptions(example.data, key)
       fetcher(example.url, options, function(status, data) {
         console.log('API response JSON:', data)
-        document.getElementById('response').innerHTML = JSON.stringify(data, null, 2);
+        document.getElementById('response').innerHTML = 'API response:\n' + JSON.stringify(data, null, 2);
         if (status != 200 || !example.cb) {
           document.getElementById('processed').innerHTML = null
           return
@@ -49,7 +55,7 @@
           return
         }
         console.log('Processed:', processed)
-        document.getElementById('processed').innerHTML = JSON.stringify(processed, null, 2);
+        document.getElementById('processed').innerHTML = 'Processed data:\n' + JSON.stringify(processed, null, 2);
       })
     }
 
