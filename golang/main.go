@@ -16,35 +16,10 @@ import (
 
 const URL string = "https://forecast-v2.metoceanapi.com/point/time"
 
-type Point struct {
-	Longitude float64 `json:"lon"`
-	Latitude  float64 `json:"lat"`
+type Example struct {
+	request PointRequest
+	process func(PointResponse) any
 }
-
-// You must specify at least one of from and to, unless you specify an explicit list of times
-type TimeSequence struct {
-	From     *time.Time `json:"from,omitempty"`
-	To       *time.Time `json:"to,omitempty"`
-	Interval *Duration  `json:"interval,omitempty"`
-	Repeat   *uint32    `json:"repeat,omitempty"`
-}
-
-type PointRequest struct {
-	Time      TimeSequence `json:"time"`
-	Points    []Point      `json:"points"`
-	Variables []string     `json:"variables"`
-	Format    *string      `json:"outputFormat,omitempty"`
-}
-
-type Duration struct {
-	time.Duration
-}
-
-func (d Duration) MarshalJSON() ([]byte, error) {
-	return json.Marshal(d.String())
-}
-
-type Example PointRequest // TODO we will need more than this
 
 func ptr[V any](v V) *V {
 	return &v
@@ -64,11 +39,9 @@ func mapKeys(m any) []string {
 	return strings
 }
 
-// TODO need to parse API response
-
 var (
 	now      = time.Now()
-	examples = map[string]Example{"pointTime": Example(pointTime)}
+	examples = map[string]Example{"pointTime": {request: pointTime}}
 
 	pointTime = PointRequest{
 		Points: []Point{{Longitude: 0, Latitude: 0}},
@@ -102,7 +75,7 @@ func mainWithCode() int {
 		return 1
 	}
 
-	reqData, err := json.Marshal(example)
+	reqData, err := json.Marshal(example.request)
 	if err != nil {
 		fmt.Printf("Failed to serialise example: %v\n", err)
 		return 1
@@ -125,17 +98,17 @@ func mainWithCode() int {
 	}
 	defer res.Body.Close()
 
-	var data json.RawMessage
+	var resData PointResponse
 	decoder := json.NewDecoder(res.Body)
-	if err = decoder.Decode(&data); err != nil {
-		fmt.Printf("Request did not return valid JSON, please report this\n")
+	if err = decoder.Decode(&resData); err != nil {
+		fmt.Printf("Request did not return valid JSON, please report this: %v\n", err)
 		return 1
 	}
 	if res.StatusCode != http.StatusOK {
-		fmt.Printf("API returned an error: %v\n%v\n", res.StatusCode, string(data))
+		fmt.Printf("API returned an error: %v\n%v\n", res.StatusCode, resData.err)
 		return 1
 	}
 
-	fmt.Printf("Received: %v\n", string(data))
+	fmt.Printf("Received: %v\n", resData.response)
 	return 0
 }
