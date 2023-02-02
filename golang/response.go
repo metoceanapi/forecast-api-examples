@@ -1,47 +1,38 @@
 package main
 
-import (
-	"encoding/json"
-	"fmt"
-	"strings"
-)
+type VariableFloat struct {
+	Variable
+	Data   []float32 `json:"data"` //  N.B. during decoding, nulls are skipped
+	NoData []uint8   `json:"noData"`
+}
 
-type PointResponse struct {
-	response *PointDataResponse
+type PointDataResponseFloat struct {
+	Dimensions    map[string]Dimension     `json:"dimensions"`
+	Variables     map[string]VariableFloat `json:"variables"`
+	NoDataReasons map[string]uint8         `json:"noDataReasons"`
+}
+
+type PointResponseFloat struct {
+	response *PointDataResponseFloat
 	err      error
 }
 
-type PointDataResponse struct {
-	Dimensions    map[string]Dimension `json:"dimensions"`
-	Variables     map[string]Variable  `json:"variables"`
-	NoDataReasons map[string]uint32    `json:"noDataReasons"`
+func (r *PointResponseFloat) UnmarshalJSON(data []byte) error {
+	return UnmarshalJSONPointResponse(data, r)
 }
 
-type Dimension struct {
-	Type  string `json:"type"`
-	Units string `json:"units"`
-	Data  any    `json:"data"`
+func (r *PointResponseFloat) SetError(err error) {
+	r.err = err
 }
 
-type Variable struct {
-	StandardName string    `json:"standardName"`
-	Units        string    `json:"units"`
-	SIUnits      string    `json:"siUnits"`
-	Dimensions   []string  `json:"dimensions"`
-	Data         []float64 `json:"data"` //  N.B. during decoding, nulls are skipped
-	NoData       []uint8   `json:"noData"`
+func (r *PointResponseFloat) Error() error {
+	return r.err
 }
 
-func (r *PointResponse) UnmarshalJSON(data []byte) error {
-	var errors []string
-	if err := json.Unmarshal(data, &errors); err == nil {
-		r.err = fmt.Errorf(strings.Join(errors, ", "))
-		return nil
-	}
-	dataRes := PointDataResponse{}
-	err := json.Unmarshal(data, &dataRes)
-	if err == nil {
-		r.response = &dataRes
-	}
-	return err
+func (r *PointResponseFloat) Response() any {
+	return r.response
+}
+
+func (r *PointResponseFloat) ResponsePtr() any {
+	return &r.response
 }

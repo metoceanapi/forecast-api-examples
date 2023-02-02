@@ -17,8 +17,47 @@ import (
 const URL string = "https://forecast-v2.metoceanapi.com/point/time"
 
 type Example struct {
-	request PointRequest
-	process func(PointResponse) any
+	request  PointRequest
+	response PointResponse
+	process  func(PointResponse) any
+}
+
+type PointResponse interface {
+	SetError(error)
+	Error() error
+	Response() any
+	ResponsePtr() any
+}
+
+type Dimension struct {
+	Type  string `json:"type"`
+	Units string `json:"units"`
+	Data  any    `json:"data"`
+}
+
+type Variable struct {
+	StandardName string   `json:"standardName"`
+	Units        string   `json:"units"`
+	SIUnits      string   `json:"siUnits"`
+	Dimensions   []string `json:"dimensions"`
+}
+
+func UnmarshalJSONPointResponse(data []byte, out PointResponse) error {
+	var errors []string
+	if err := json.Unmarshal(data, &errors); err == nil {
+		out.SetError(fmt.Errorf(strings.Join(errors, ", ")))
+		return nil
+	}
+	responsePtr := out.ResponsePtr()
+	return json.Unmarshal(data, &responsePtr)
+}
+
+func unpackBase64(r PointResponse) any {
+	b64, ok := r.(*PointResponseBase64)
+	if !ok {
+		return fmt.Errorf("Couldn't cast argument to a base64 response")
+	}
+	return b64.response.UnpackData()
 }
 
 func ptr[V any](v V) *V {
@@ -41,7 +80,10 @@ func mapKeys(m any) []string {
 
 var (
 	now      = time.Now()
-	examples = map[string]Example{"pointTime": {request: pointTime}}
+	examples = map[string]Example{
+		"pointTime":       {request: pointTime, response: &PointResponseFloat{}},
+		"pointTimeBase64": {request: pointTimeBase64, response: &PointResponseBase64{}, process: unpackBase64},
+	}
 
 	pointTime = PointRequest{
 		Points: []Point{{Longitude: 0, Latitude: 0}},
@@ -51,6 +93,17 @@ var (
 			Repeat:   ptr(uint32(2)),
 		},
 		Variables: []string{"wave.height"},
+	}
+
+	pointTimeBase64 = PointRequest{
+		Points: []Point{{Longitude: 0, Latitude: 0}},
+		Time: TimeSequence{
+			From:     &now,
+			Interval: ptr(Duration{time.Hour * 3}),
+			Repeat:   ptr(uint32(2)),
+		},
+		Variables: []string{"wave.height"},
+		Format:    ptr("base64"),
 	}
 
 	apiKey  = flag.String("apikey", "", "API key to use for requests.")
@@ -98,23 +151,22 @@ func mainWithCode() int {
 	}
 	defer res.Body.Close()
 
-	var resData PointResponse
 	decoder := json.NewDecoder(res.Body)
-	if err = decoder.Decode(&resData); err != nil {
+	if err = decoder.Decode(&example.response); err != nil {
 		fmt.Printf("Request did not return valid JSON, please report this: %v\n", err)
 		return 1
 	}
 	if res.StatusCode != http.StatusOK {
-		fmt.Printf("API returned an error: %v\n%v\n", res.StatusCode, resData.err)
+		fmt.Printf("API returned an error: %v\n%v\n", res.StatusCode, example.response.Error())
 		return 1
 	}
 
-	fmt.Printf("Received: %v\n", resData.response)
+	fmt.Printf("Received: %v\n", example.response.Response())
 	if example.process == nil {
 		return 0
 	}
 
-	if processed := example.process(resData); processed != nil {
+	if processed := example.process(example.response); processed != nil {
 		fmt.Printf("Processed: %v\n", processed)
 	}
 
