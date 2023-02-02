@@ -110,5 +110,13 @@ func mainWithCode() int {
 	}
 
 	fmt.Printf("Received: %v\n", resData.response)
+	if example.process == nil {
+		return 0
+	}
+
+	if processed := example.process(resData); processed != nil {
+		fmt.Printf("Processed: %v\n", processed)
+	}
+
 	return 0
 }
