@@ -28,8 +28,8 @@ type Variable struct {
 	Units        string    `json:"units"`
 	SIUnits      string    `json:"siUnits"`
 	Dimensions   []string  `json:"dimensions"`
-	Data         []float64 `json:"data"`
-	NoData       []uint8   `json:"noData"` // or uint32??
+	Data         []float64 `json:"data"` //  N.B. during decoding, nulls are skipped
+	NoData       []uint8   `json:"noData"`
 }
 
 func (r *PointResponse) UnmarshalJSON(data []byte) error {
