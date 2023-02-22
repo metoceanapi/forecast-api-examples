@@ -4,11 +4,11 @@ This requires go 1.19 or newer to be installed. Clone the repository or copy the
 
 To run an example:
 ```
-go run -example <example-name> -apikey <your-apikey-here>
+go run . -example <example-name> -apikey <your-apikey-here>
 ```
 Two currently available examples are `pointTime` and `pointTimeBase64`.
 
 To print usage, including a list of currently available examples:
 ```
-go run -h
+go run . -h
 ```
