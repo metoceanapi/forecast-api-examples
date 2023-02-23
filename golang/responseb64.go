@@ -57,7 +57,7 @@ func (v VariableBase64) UnpackData(maskLut map[uint32]uint8) VariableFloat {
 	return regular
 }
 
-func (r PointDataResponseBase64) UnpackData() PointDataResponseFloat {
+func (r PointDataResponseBase64) UnpackData() (PointDataResponseFloat, error) {
 	currCode := uint8(1)
 	reasons := make(map[string]uint8, len(r.NoDataCodes)+1)
 	maskLut := make(map[uint32]uint8, len(r.NoDataCodes))
@@ -76,5 +76,5 @@ func (r PointDataResponseBase64) UnpackData() PointDataResponseFloat {
 	for name, v := range r.Variables {
 		regular.Variables[name] = v.UnpackData(maskLut)
 	}
-	return regular
+	return regular, nil
 }

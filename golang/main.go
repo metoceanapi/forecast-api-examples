@@ -19,7 +19,7 @@ const URL string = "https://forecast-v2.metoceanapi.com/point/time"
 type Example struct {
 	request  PointRequest
 	response PointResponse
-	process  func(PointResponse) any
+	process  func(PointResponse) (any, error)
 }
 
 type PointResponse interface {
@@ -52,10 +52,10 @@ func UnmarshalJSONPointResponse(data []byte, out PointResponse) error {
 	return json.Unmarshal(data, &responsePtr)
 }
 
-func unpackBase64(r PointResponse) any {
+func unpackBase64(r PointResponse) (any, error) {
 	b64, ok := r.(*PointResponseBase64)
 	if !ok {
-		return fmt.Errorf("Couldn't cast argument to a base64 response")
+		return nil, fmt.Errorf("Couldn't cast argument to a base64 response")
 	}
 	return b64.response.UnpackData()
 }
@@ -161,13 +161,24 @@ func mainWithCode() int {
 		return 1
 	}
 
-	fmt.Printf("Received: %v\n", example.response.Response())
+	result := example.response.Response()
+	if data, err := json.MarshalIndent(result, "", " "); err == nil {
+		fmt.Printf("Received: %v\n", string(data))
+	} else {
+		fmt.Printf("Received: %v but couldn't encode it as JSON: %v\n", result, err)
+	}
 	if example.process == nil {
 		return 0
 	}
 
-	if processed := example.process(example.response); processed != nil {
-		fmt.Printf("Processed: %v\n", processed)
+	if processed, err := example.process(example.response); err != nil {
+		fmt.Printf("Failed to process: %v\n", err)
+	} else if processed != nil {
+		if data, err := json.MarshalIndent(processed, "", " "); err == nil {
+			fmt.Printf("Processed: %v\n", string(data))
+		} else {
+			fmt.Printf("Processed: %v but couldn't encode it as JSON: %v\n", processed, err)
+		}
 	}
 
 	return 0
