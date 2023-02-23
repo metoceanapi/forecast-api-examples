@@ -12,7 +12,7 @@ type VariableBase64 struct {
 type PointDataResponseBase64 struct {
 	Dimensions  map[string]Dimension      `json:"dimensions"`
 	Variables   map[string]VariableBase64 `json:"variables"`
-	NoDataCodes map[string]uint32         `json:"noDataCodes"`
+	NoDataCodes map[string]uint32         `json:"noDataMask"`
 }
 
 type PointResponseBase64 struct {
