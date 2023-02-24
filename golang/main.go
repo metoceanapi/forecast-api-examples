@@ -138,7 +138,10 @@ var (
 	}
 
 	pointTime = PointRequest{
-		Points: []Point{{Longitude: 0, Latitude: 0}},
+		Points: []Point{
+			{Longitude: 174.7842, Latitude: -37.7935},
+			{Longitude: 172, Latitude: -43},
+		},
 		Time: TimeSequence{
 			From:     &now,
 			Interval: ptr(Duration{time.Hour * 3}),
@@ -148,7 +151,10 @@ var (
 	}
 
 	pointTimeBase64 = PointRequest{
-		Points: []Point{{Longitude: 0, Latitude: 0}},
+		Points: []Point{
+			{Longitude: 174.7842, Latitude: -37.7935},
+			{Longitude: 172, Latitude: -43},
+		},
 		Time: TimeSequence{
 			From:     &now,
 			Interval: ptr(Duration{time.Hour * 3}),
