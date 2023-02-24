@@ -38,8 +38,8 @@ export let pointTimeWindVectors = {
         return null
       }
       let east = windSpeedEast['data'][index]
-      let dividend = Math.atan2(-north, -east) * (180 / Math.PI)
-      return ((dividend % 360) + 360) % 360 // JavaScript % uses truncated division (like C), not floored division (like Python)
+      let dividend = Math.atan2(-east, -north) * (180 / Math.PI)
+      return (dividend + 360) % 360 // JavaScript % uses truncated division (like C), not floored division (like Python)
     })
     return {'wind.speed.at-10m': windSpeedScalar, 'wind.direction.at-10m': windDirectionDegrees}
   },
