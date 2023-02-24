@@ -20,7 +20,7 @@ function unpack(variable, reasonsByCode) {
   let b64data = variable['data']
   let bytes = Uint8Array.from(atob(b64data), c => c.charCodeAt(0))
   let view = new DataView(bytes.buffer)
-  // If you know you are running on a little endian platform,
+  // If you know you are running on a little-endian platform,
   // you can simply use Uint32Array and Float32Array on bytes.buffer
   return Array.from({length: bytes.length / bytesPerUint32}).map((_, index) => {
     let offset = index * bytesPerUint32
