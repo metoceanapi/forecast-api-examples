@@ -2,7 +2,7 @@ from requests import post
 from numpy import float64, pi
 from numpy.ma import masked_array, mod, arctan2, sqrt, power
 from os import getenv
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 # NOTE: don't for get to set "apikey" env, or the default below.
@@ -19,7 +19,7 @@ resp = post(
             "wind.speed.eastward.at-10m"
         ],
         "time": {
-            "from": "{:%Y-%m-%dT00:00:00Z}".format(datetime.utcnow()),
+            "from": "{:%Y-%m-%dT00:00:00Z}".format(datetime.now(timezone.utc)),
             "interval": "3h",
             "repeat": 2
         }

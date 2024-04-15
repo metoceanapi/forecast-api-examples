@@ -1,6 +1,6 @@
 from requests import post
 from os import getenv
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 
@@ -17,7 +17,7 @@ resp = post(
             "cloud.cover"
         ],
         "time": {
-            "from": "{:%Y-%m-%dT00:00:00Z}".format(datetime.utcnow()),
+            "from": "{:%Y-%m-%dT00:00:00Z}".format(datetime.now(timezone.utc)),
             "interval": "3h",
             "repeat": 2
         }

@@ -2,13 +2,13 @@ from requests import post
 from numpy import float64
 from numpy.ma import masked_array, is_masked
 from os import getenv
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 # NOTE: don't for get to set "apikey" env, or the default below.
 resp = post(
     "https://forecast-v2.metoceanapi.com/point/time",
-    headers={"x-api-key": getenv("apikey", "MYAPIKEY")},
+    headers={"x-api-key": getenv("METSERVICE_API_KEY", "MYAPIKEY")},
     json={
         "points": [{
           "lon": 174.7842,
@@ -18,7 +18,7 @@ resp = post(
             "precipitation.rate"
         ],
         "time": {
-            "from": "{:%Y-%m-%dT00:00:00Z}".format(datetime.utcnow()),
+            "from": "{:%Y-%m-%dT00:00:00Z}".format(datetime.now(timezone.utc)),
             "interval": "3h",
             "repeat": 2
         }

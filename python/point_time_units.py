@@ -2,7 +2,7 @@ from requests import post
 from numpy import float64
 from numpy.ma import masked_array
 from os import getenv
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 # NOTE: don't for get to set "apikey" env, or the default below.
@@ -18,7 +18,7 @@ resp = post(
             "air.temperature.at-2m"
         ],
         "time": {
-            "from": "{:%Y-%m-%dT00:00:00Z}".format(datetime.utcnow()),
+            "from": "{:%Y-%m-%dT00:00:00Z}".format(datetime.now(timezone.utc)),
             "interval": "3h",
             "repeat": 2
         }
