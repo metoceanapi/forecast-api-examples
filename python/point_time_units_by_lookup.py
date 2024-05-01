@@ -2,7 +2,7 @@ from requests import Session
 from numpy import float64
 from numpy.ma import masked_array
 from os import environ
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def _convert_units(data, src_units: str, dst_units: str, units_list: dict):
@@ -38,7 +38,7 @@ def _main():
                     "air.temperature.at-2m"
                 ],
                 "time": {
-                    "from": "{:%Y-%m-%dT00:00:00Z}".format(datetime.utcnow()),
+                    "from": "{:%Y-%m-%dT00:00:00Z}".format(datetime.now(timezone.utc)),
                     "interval": "3h",
                     "repeat": 2
                 }

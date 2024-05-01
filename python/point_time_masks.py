@@ -2,7 +2,7 @@ from requests import post
 from numpy import float64
 from numpy.ma import masked_array
 from os import environ
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 # Below is an example of selecting two geographical points, one in the ocean -37.7935, 174.7842 and the other on
@@ -28,7 +28,7 @@ resp = post(
             "wave.height"
         ],
         "time": {
-            "from": "{:%Y-%m-%dT00:00:00Z}".format(datetime.utcnow()),
+            "from": "{:%Y-%m-%dT00:00:00Z}".format(datetime.now(timezone.utc)),
             "interval": "3h",
             "repeat": 2
         }
