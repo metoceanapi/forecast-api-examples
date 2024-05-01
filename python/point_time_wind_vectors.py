@@ -1,14 +1,14 @@
 from requests import post
 from numpy import float64, pi
 from numpy.ma import masked_array, mod, arctan2, sqrt, power
-from os import getenv
+from os import environ
 from datetime import datetime
 
 
 # NOTE: don't for get to set "apikey" env, or the default below.
 resp = post(
     "https://forecast-v2.metoceanapi.com/point/time",
-    headers={"x-api-key": getenv("apikey", "MYAPIKEY")},
+    headers={"x-api-key": environ["apikey"]},
     json={
         "points": [{
             "lon": 174.7842,

@@ -1,7 +1,7 @@
 from requests import Session
 from numpy import float64
 from numpy.ma import masked_array
-from os import getenv
+from os import environ
 from datetime import datetime
 
 
@@ -24,7 +24,7 @@ def _get_json(resp):
 def _main():
     with Session() as session:
         url = "https://forecast-v2.metoceanapi.com"
-        auth_headers = {"x-api-key": getenv("apikey", "MYAPIKEY")}
+        auth_headers = {"x-api-key": environ["apikey"]}
         units_list = _get_json(session.get(f"{url}/units/", headers=auth_headers))
         forecast = _get_json(session.post(
             f"{url}/point/time",
